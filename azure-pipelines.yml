@@ -47,4 +47,4 @@ steps:
     appType: 'webAppLinux'
     appName: '<your-app-name>'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-  displayName: 'Deploy to Azure Web App'
+  displayName: 'Deploy to Azure Web App' 
