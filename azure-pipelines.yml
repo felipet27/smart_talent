@@ -12,11 +12,11 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install fastapi uvicorn pytest bandit flake8
+    pip install -r requirements.txt
   displayName: 'Install dependencies'
 
 - script: |
-    pytest
+    pytest --cov=.
   displayName: 'Run tests'
 
 - script: |
@@ -47,4 +47,4 @@ steps:
     appType: 'webAppLinux'
     appName: '<your-app-name>'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-  displayName: 'Deploy to Azure Web App' 
+  displayName: 'Deploy to Azure Web App'
