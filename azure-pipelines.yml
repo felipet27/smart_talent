@@ -1,0 +1,50 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+  displayName: 'Use Python 3.x'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install fastapi uvicorn pytest bandit flake8
+  displayName: 'Install dependencies'
+
+- script: |
+    pytest
+  displayName: 'Run tests'
+
+- script: |
+    bandit -r .
+  displayName: 'Run security checks'
+
+- script: |
+    flake8 .
+  displayName: 'Run code quality checks'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy files to staging directory'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish build artifacts'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: '<your-subscription>'
+    appType: 'webAppLinux'
+    appName: '<your-app-name>'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+  displayName: 'Deploy to Azure Web App'
