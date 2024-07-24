@@ -40,4 +40,5 @@ steps:
       appType: 'webAppLinux'
       appName: 'smarttalent'
       package: '$(Build.ArtifactStagingDirectory)/app.zip'
+      appSettings: '-SCM_DO_BUILD_DURING_DEPLOYMENT true'
     displayName: 'Deploy to Azure Web App'
