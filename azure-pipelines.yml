@@ -39,5 +39,5 @@ steps:
       azureSubscription: 'Smart_Talent'
       appType: 'webAppLinux'
       appName: 'smarttalent'
-      package: '$(Pipeline.Workspace)/app.zip'
+      package: '$(Build.ArtifactStagingDirectory)/app.zip'
     displayName: 'Deploy to Azure Web App'
