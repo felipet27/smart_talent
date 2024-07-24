@@ -43,8 +43,8 @@ steps:
 
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: '<your-subscription>'
+    azureSubscription: 'Azure subscription 1 (c0fe99be-0897-4305-9d5b-92182ef6bdef)'
     appType: 'webAppLinux'
-    appName: '<your-app-name>'
+    appName: 'smart_talent'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
   displayName: 'Deploy to Azure Web App'
