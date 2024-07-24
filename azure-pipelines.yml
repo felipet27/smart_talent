@@ -1,28 +1,43 @@
 trigger:
-- main
+  - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
-  displayName: 'Use Python 3.x'
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+    displayName: 'Use Python 3.x'
 
-- script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+    displayName: 'Install dependencies'
 
-- script: |
-    pytest --cov=.
-  displayName: 'Run tests'
+  - script: |
+      pytest --cov=.
+    displayName: 'Run tests'
 
-- task: AzureWebApp@1
-  inputs:
-    azureSubscription: 'Smart_Talent'
-    appType: 'webAppLinux'
-    appName: 'smarttalent'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-  displayName: 'Deploy to Azure Web App'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+      replaceExistingArchive: true
+    displayName: 'Archive app files'
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/app.zip'
+      artifactName: 'app'
+    displayName: 'Publish app artifact'
+
+  - task: AzureWebApp@1
+    inputs:
+      azureSubscription: 'Smart_Talent'
+      appType: 'webAppLinux'
+      appName: 'smarttalent'
+      package: '$(Pipeline.Workspace)/app.zip'
+    displayName: 'Deploy to Azure Web App'
