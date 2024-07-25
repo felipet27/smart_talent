@@ -4,3 +4,4 @@ pytest
 pytest-cov
 gunicorn
 dependency-check==0.6.0
+dependency-check

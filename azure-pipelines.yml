@@ -20,15 +20,12 @@ steps:
       sudo apt-get install -y nodejs     
     displayName: 'Install Node.js'
 
+  # Install dependency-check
   - script: |
-      npm install -g npm@latest
-      npm install -g dependency-check@0.6.0 || (cat /home/vsts/.npm/_logs/*-debug-0.log && exit 1)
-    displayName: 'Update npm and install dependency-check'
-
-# Install dependency-check
-  - script: |
-      npm install -g dependency-check@0.6.0
-    displayName: 'Install dependency-check'
+      repo="jhermann/dependency-check-py"
+      python3 -m pip install -r "https://raw.githubusercontent.com/$repo/master/requirements.txt"
+      python3 -m pip install "https://github.com/$repo/archive/master.zip#egg=dependency-check"
+    displayName: 'Install dependency-check from source'
 
   # Run dependency-check
    
