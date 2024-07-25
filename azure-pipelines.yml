@@ -15,6 +15,18 @@ steps:
       pip install -r requirements.txt
     displayName: 'Install dependencies'
 
+
+# Install dependency-check
+  - script: |
+      npm install -g dependency-check@0.6.0
+    displayName: 'Install dependency-check'
+
+  # Run dependency-check
+   
+ - script: |
+      dependency-check ./requirements.txt
+    displayName: 'Run dependency-check'
+
   - script: |
       pytest --cov=.
     displayName: 'Run tests'
