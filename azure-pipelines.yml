@@ -23,7 +23,7 @@ steps:
 
   # Run dependency-check
    
- - script: |
+  - script: |
       dependency-check ./requirements.txt
     displayName: 'Run dependency-check'
 
